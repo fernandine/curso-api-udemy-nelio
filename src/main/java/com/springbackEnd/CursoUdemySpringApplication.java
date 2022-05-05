@@ -13,14 +13,19 @@ import com.springbackEnd.domain.Cidade;
 import com.springbackEnd.domain.Cliente;
 import com.springbackEnd.domain.Endereco;
 import com.springbackEnd.domain.Estado;
+import com.springbackEnd.domain.Pagamento;
+import com.springbackEnd.domain.PagamentoComBoleto;
+import com.springbackEnd.domain.PagamentoComCartao;
 import com.springbackEnd.domain.Pedido;
 import com.springbackEnd.domain.Produto;
+import com.springbackEnd.domain.enums.EstadoPagamento;
 import com.springbackEnd.domain.enums.TipoCliente;
 import com.springbackEnd.repositories.CategoriaRepository;
 import com.springbackEnd.repositories.CidadeRepository;
 import com.springbackEnd.repositories.ClienteRepository;
 import com.springbackEnd.repositories.EnderecoRepository;
 import com.springbackEnd.repositories.EstadoRepository;
+import com.springbackEnd.repositories.PagamentoRepository;
 import com.springbackEnd.repositories.PedidoRepository;
 import com.springbackEnd.repositories.ProdutoRepository;
 
@@ -43,6 +48,8 @@ public class CursoUdemySpringApplication implements CommandLineRunner{
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	
 	public static void main(String[] args) {
@@ -99,7 +106,16 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
 		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
 		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+				
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 	}
 
 }
