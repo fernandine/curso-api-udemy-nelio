@@ -163,4 +163,9 @@ public class ClienteNewDto implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+
+	public Integer getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

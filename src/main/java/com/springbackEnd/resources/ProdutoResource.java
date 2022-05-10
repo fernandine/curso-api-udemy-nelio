@@ -1,6 +1,5 @@
 package com.springbackEnd.resources;
 
-import java.net.URL;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springbackEnd.DTOs.ProdutoDto;
 import com.springbackEnd.domain.Produto;
+import com.springbackEnd.resources.utils.URL;
 import com.springbackEnd.services.ProdutoService;
 
 @RestController

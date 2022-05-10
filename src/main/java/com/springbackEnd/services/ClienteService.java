@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,9 +14,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.springbackEnd.DTOs.ClienteDto;
-import com.springbackEnd.DTOs.ClienteNewDto;
 import com.springbackEnd.domain.Cliente;
-import com.springbackEnd.repositories.CidadeRepository;
 import com.springbackEnd.repositories.ClienteRepository;
 import com.springbackEnd.repositories.EnderecoRepository;
 import com.springbackEnd.services.exceptions.DataIntegrityException;
@@ -27,8 +26,6 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 	
-	@Autowired
-	private CidadeRepository cidadeRepository;
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
@@ -44,7 +41,7 @@ public class ClienteService {
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		obj = repo.save(obj);
-		enderecoRepository.save(obj.getEnderecos());
+		enderecoRepository.saveAll(obj.getEnderecos());
 		return obj;
 	}
 	
@@ -75,11 +72,11 @@ public class ClienteService {
 		return repo.findAll(pageRequest);
 	}
 	
-	public Cliente fromDto(ClienteDto objDto) {
+	public Cliente fromDto(@Valid ClienteDto objDto) {
 		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
 	}
 	
-	public Cliente fromDTO(ClienteNewDto objDto) {
+	/*public Cliente fromDto(ClienteNewDto objDto) {
 		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
 				TipoCliente.toEnum(objDto.getTipo()), pe.encode(objDto.getSenha()));
 		Cidade cid = cidadeRepository.findOne(objDto.getCidadeId());
@@ -93,7 +90,7 @@ public class ClienteService {
 		if (objDto.getTelefone3() != null) {
 			cli.getTelefones().add(objDto.getTelefone3());
 		}
-		return cli;
+		return cli;*/
 	
 	
 	private void updateData(Cliente newObj, Cliente obj) {
